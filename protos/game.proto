@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package pytorch.elf.game.v1;
+
+import "google/rpc/status.proto";
+
+option go_package = "elfgame";
+
+service Game {
+    rpc NewGC(Player) returns (google.rpc.Status);
+    rpc FreeGC(Player) returns (google.rpc.Status);
+    rpc ClearBoard(Player) returns (google.rpc.Status);
+    rpc Play(Step) returns (Reply);
+    rpc GenMove(Player) returns (Reply);
+    rpc Pass(Player) returns (Reply);
+    rpc Resign(Player) returns (Reply);
+}
+
+message Player {
+    string id = 1;
+}
+
+message Coordinate {
+    int32 x = 1;
+    int32 y = 2;
+}
+
+message Step {
+    Player player = 1;
+    Coordinate coordinate = 2;
+    string move = 3;
+}
+
+message Reply {
+    Coordinate coordinate = 1;
+    string next_player = 2;
+    float final_score = 3;
+    google.rpc.Status status = 4;
+    bool resigned = 5;
+    string last_move = 6;
+    string board = 7;
+}
