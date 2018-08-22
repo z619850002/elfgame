@@ -172,6 +172,9 @@ class GameContext:
 #the game context has a channel which can help it deal with the command orderly
 class GoGame(game_pb2_grpc.GameServicer):
 
+    def finishNewThread(self):
+        self.newThread.join(1)
+
     def __init__(self, maxsize=10):
 
         self.connectionTime = 0
@@ -202,7 +205,8 @@ class GoGame(game_pb2_grpc.GameServicer):
                 self.connectionTime = self.connectionTime + 1
                 sleep(1)
         try:
-            threading.Thread(target=heartBeat).start()
+            self.newThread = threading.Thread(target=heartBeat)
+            self.newThread.start()
         except:
             print("Error: unable to start thread")
 
@@ -366,6 +370,7 @@ def main():
     gevent.signal(signal.SIGINT, gameserver.stop)
     debug_print("Starting game server on {listen}".format(listen=listen))
     gevent.spawn(gameserver.start).join()
+    gameserver.game.finishNewThread()
     debug_print("Gameserver is stopped")
 
 
