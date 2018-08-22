@@ -173,20 +173,23 @@ class GameContext:
 class GoGame(game_pb2_grpc.GameServicer):
 
     def finishNewThread(self):
-        self.newThread.join(1)
+        self.finish = 0
 
     def __init__(self, maxsize=10):
-
+        self.finish = 1
         self.connectionTime = 0
         self._players = {}
         self.gc_pools = Queue(maxsize=maxsize)
         self.greenlets = []
         self.start_console()
+        self.lock = False
 
         def heartBeat():
-            while(1):
+            while(self.finish==1):
+                #lock this block
                 #connection is broken
                 if (self.connectionTime > 5):
+                    self.lock = True
                     #clear the board now
                     for gcItem in self._players.values():
                         gcItem.reqChan.putnowait("clear_board")
@@ -201,8 +204,11 @@ class GoGame(game_pb2_grpc.GameServicer):
                         self.gc_pools.put_nowait(self._players.pop(playerId))
                     print("connection out of time, free all gc")
                     self.connectionTime = -1
+                    self.lock = False
                 #calculate for the connection time
                 self.connectionTime = self.connectionTime + 1
+                #release the lock
+                self.lock.release()
                 sleep(1)
         try:
             self.newThread = threading.Thread(target=heartBeat)
@@ -265,6 +271,8 @@ class GoGame(game_pb2_grpc.GameServicer):
     #the function here will return the protobuf
     #the function like clear board, play etc., will block here until the response channel is not empty
     def NewGC(self, request, context):
+        while (self.lock):
+            pass
         #offered by the client
         playerId = request.id
         if not playerId in self._players:
@@ -275,6 +283,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return google_dot_rpc_dot_status__pb2.Status(code=google_dot_rpc_dot_code__pb2.OK)
 
     def FreeGC(self, request, context):
+        while (self.lock):
+            pass
         playerId = request.id
         if playerId not in self._players:
             return google_dot_rpc_dot_status__pb2.Status(code=google_dot_rpc_dot_code__pb2.NOT_FOUND)
@@ -282,6 +292,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return google_dot_rpc_dot_status__pb2.Status(code=google_dot_rpc_dot_code__pb2.OK)
 
     def ClearBoard(self, request, context):
+        while (self.lock):
+            pass
         gc = self._players[request.id]
         #now the game will send message to the game context`s channel,
         #  then those contexts will deal with them orderly
@@ -292,6 +304,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return gc.respChan.get()
 
     def Play(self, request, context):
+        while (self.lock):
+            pass
         gc = self._players[request.player.id]
         try:
             gc.action = gc.console.move2action(request.move)
@@ -304,6 +318,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return gc.respChan.get()
 
     def GenMove(self, request, context):
+        while (self.lock):
+            pass
         gc = self._players[request.id]
         gc.reqChan.put_nowait("genmove")
         #until the gc make response this object will be blocked
@@ -312,6 +328,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return gc.respChan.get()
 
     def Pass(self, request, context):
+        while (self.lock):
+            pass
         gc = self._players[request.id]
         gc.reqChan.put_nowait("pass")
         while gc.respChan.empty():
@@ -319,6 +337,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return gc.respChan.get()
 
     def Resign(self, request, context):
+        while (self.lock):
+            pass
         gc = self._players[request.id]
         gc.reqChan.put_nowait("resign")
         while gc.respChan.empty():
@@ -326,6 +346,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return gc.respChan.get()
 
     def HeartBeat(self, request , context):
+        while (self.lock):
+            pass
         self.connectionTime = 0
         return game_pb2.BeatReply(beatReply = 1)
 
