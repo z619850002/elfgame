@@ -14,7 +14,18 @@ service Game {
     rpc GenMove(Player) returns (Reply);
     rpc Pass(Player) returns (Reply);
     rpc Resign(Player) returns (Reply);
+    rpc HeartBeat(Beat) returns (BeatReply);
 }
+
+
+message Beat{
+    int32 beat = 1;
+}
+
+message BeatReply{
+    int32 beatReply = 1;
+}
+
 
 message Player {
     string id = 1;

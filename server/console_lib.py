@@ -9,6 +9,8 @@ import traceback
 from collections import Counter
 
 
+#move to x y
+#change the move object to a position
 def move2xy(v):
     if v.lower() == "pass":
         return -1, -1
@@ -19,7 +21,8 @@ def move2xy(v):
     y = int(v[1:]) - 1
     return x, y
 
-
+#x y to move
+#change the x, y coordinates to a move object
 def xy2move(x, y):
     if x == -1 and y == -1:
         return "pass"
@@ -28,7 +31,7 @@ def xy2move(x, y):
         x += 1
     return chr(x + 65) + str(y + 1)
 
-
+#draw the chess board
 def plot_plane(v):
     s = ""
     for j in range(v.size(1)):
@@ -40,7 +43,7 @@ def plot_plane(v):
         s += "\n"
     print(s)
 
-
+#state curr is the response of the ai
 def topk_accuracy2(batch, state_curr, topk=(1,)):
     pi = state_curr["pi"]
     import torch
@@ -61,7 +64,7 @@ def topk_accuracy2(batch, state_curr, topk=(1,)):
 
     return [topn_count[i - 1] for i in topk]
 
-
+#it seems that I have no need to understand the go console, just read the go console gtp is ok
 class GoConsole:
     def __init__(self, GC, evaluator):
         self.exit = False
@@ -70,18 +73,22 @@ class GoConsole:
         self.evaluator = evaluator
         self.last_move_idx = None
 
+
+    #action is a position of 1 dimension
     def move2action(self, v):
         if v.lower() == "pass":
             return self.board_size ** 2
         x, y = move2xy(v)
         return x * self.board_size + y
 
+    #the inverse transformation of the function above
     def action2move(self, a):
         if a == self.board_size ** 2:
             return "pass"
         x = a // self.board_size
         y = a % self.board_size
         return xy2move(x, y)
+
 
     def check(self, batch):
         reply = self.evaluator.actor(batch)
@@ -95,9 +102,12 @@ class GoConsole:
         reply = self.evaluator.actor(batch)
         return reply
 
+    #show the chess board
     def showboard(self, batch):
         print(batch.GC.getGame(0).showBoard())
 
+    #accept the command and make some response
+    #return the reply
     def prompt(self, prompt_str, batch):
         if self.last_move_idx is not None:
             curr_move_idx = batch["move_idx"][0][0]
@@ -113,7 +123,6 @@ class GoConsole:
                     accu += self.check_stats[i]
                     print("Top %d: %.3f" % (i, accu / n))
                 self.last_move_idx = None
-
         self.showboard(batch)
         # Ask user to choose
         while True:
@@ -127,6 +136,7 @@ class GoConsole:
                 print("Invalid input")
 
             c = items[0]
+            #mainly set the reply a
             reply = dict(pi=None, a=None, V=0)
 
             try:
@@ -138,6 +148,7 @@ class GoConsole:
                     return reply
                 elif c == "s":
                     channel_id = int(items[1])
+                    #draw the chess board
                     plot_plane(batch["s"][0][0][channel_id])
                 elif c == "a":
                     reply = self.evaluator.actor(batch)
@@ -203,8 +214,11 @@ class GoConsole:
                     self.showboard(batch)
                 '''
 
-
+#reply for the user input
+#the console here can bridge the communication between server and the console
 class GoConsoleGTP:
+    #the function below are mainly response to the command input by the user
+    #they will return some reply, which is a dictionary
     def on_protocol_version(self, batch, items, reply):
         return True, "2"
 
@@ -271,11 +285,14 @@ class GoConsoleGTP:
         msg = "\n".join(self.commands.keys())
         return True, msg
 
+    #firstly init the console lib
+    #this GC is the GC from the source code
     def __init__(self, GC, evaluator):
         self.exit = False
         self.GC = GC
         self.board_size = GC.params["board_size"]
         self.evaluator = evaluator
+        #4 kinds of actions
         self.actions = {
             "skip": GC.params["ACTION_SKIP"],
             "pass": GC.params["ACTION_PASS"],

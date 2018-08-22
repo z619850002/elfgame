@@ -13,6 +13,7 @@ from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 
 import gevent
 import grpc
+
 import os
 import signal
 import sys
@@ -20,7 +21,8 @@ import traceback
 
 import game_pb2
 import game_pb2_grpc
-
+import threading
+from time import sleep
 
 # Load env
 additional_to_load = {
@@ -101,28 +103,35 @@ mi["actor"].eval()
 def debug_print(message):
     print("\033[92m{message}\033[0m".format(message=message))
 
-
+#one game context is just one chess game
+#the game context will deal with the command in its channel continuely
 class GameContext:
 
     def __init__(self):
         self.action = None
         self.last_cmd = ""
+        #at the same time the ai can only make response to the same operation
         self.reqChan = Queue(maxsize=1)
         self.respChan = Queue(maxsize=1)
         self._load_env()
 
     def _load_env(self):
+        #the console of one game context is just the object of the GOConsoleGTP
         self.console = GoConsoleGTP(env["game"].initialize(), env["evaluator"])
 
+    #the return value of this function is a dictionary, it`s sent to the console, while the reply to the game object is by the response channel
     def human_actor(self, batch):
         self.batch = batch
 
         if self.last_cmd == "play" or self.last_cmd == "genmove":
+            #resign means give up
             if self.console.get_last_move(batch).lower() == "resign":
+                #the last game is end， then we need to calculate for the final score
                 self.respChan.put_nowait(game_pb2.Reply(final_score=self.console.get_final_score(batch),
                                                  status=google_dot_rpc_dot_status__pb2.Status(code=google_dot_rpc_dot_code__pb2.OK),
                                                  resigned=True))
             else:
+                #last game is not end, some new step is needed
                 x, y = move2xy(self.console.get_last_move(batch))
                 self.respChan.put_nowait(game_pb2.Reply(coordinate=game_pb2.Coordinate(x=x, y=y),
                                                  next_player=self.console.get_next_player(batch),
@@ -139,6 +148,7 @@ class GameContext:
             gevent.sleep(0)
 
         cmd = self.reqChan.get()
+        #update the cmd to this time
         self.last_cmd = cmd
         if cmd == "play":
             return dict(pi=None, a=self.action, V=0)
@@ -155,25 +165,69 @@ class GameContext:
             return dict(pi=None, a=None, V=0)
 
 
+#this is a game
+#it should be regist to the server
+#the command input by user will be dealt by this class
+#at the same time, it will send message to the game context
+#the game context has a channel which can help it deal with the command orderly
 class GoGame(game_pb2_grpc.GameServicer):
 
     def __init__(self, maxsize=10):
+
+        self.connectionTime = 0
         self._players = {}
         self.gc_pools = Queue(maxsize=maxsize)
         self.greenlets = []
         self.start_console()
 
+        def heartBeat():
+            while(1):
+                #connection is broken
+                if (self.connectionTime > 5):
+                    #clear the board now
+                    for gcItem in self._players.values():
+                        gcItem.reqChan.putnowait("clear_board")
+                        while gcItem.respChan.empty():
+                            gevent.sleep(0)
+                        gcItem.respChan.get()
+                    #free all game contexts
+                    keys = []
+                    for playerId in self._players.keys():
+                        keys.append(playerId)
+                    for playerId in keys:
+                        self.gc_pools.put_nowait(self._players.pop(playerId))
+                    print("connection out of time, free all gc")
+                #calculate for the connection time
+                self.connectionTime = self.connectionTime + 1
+                sleep(1)
+        try:
+            threading.Thread(target=heartBeat).start()
+        except:
+            print("Error: unable to start thread")
+
+    #start the console module
     def _start_console(self):
+        #create a game context first
+        #the gc is just the game context below
         gc = GameContext()
 
+
+        #add the game context to the pool( 10 gc is allowed to add to the pool in default)
         self.gc_pools.put_nowait(gc)
 
+        #define 2 functions here
+        #the console of gc is the GoConsoleGTP
         def actor(batch):
             return gc.console.actor(batch)
 
+        #prompt a command of train
+        #now I consider the batch as a kind of operaion
         def train(batch):
             gc.console.prompt("DF Train> ", batch)
 
+
+        #the first gc is just the game context below while the second one
+        #is the game context in source code
         gc.console.evaluator.setup(sampler=env["sampler"], mi=mi)
 
         gc.console.GC.reg_callback_if_exists("actor_black", actor)
@@ -202,7 +256,11 @@ class GoGame(game_pb2_grpc.GameServicer):
     def stop_console(self):
         gevent.killall(self.greenlets, timeout=10)
 
+    #one game context is related to one game
+    #the function here will return the protobuf
+    #the function like clear board, play etc., will block here until the response channel is not empty
     def NewGC(self, request, context):
+        #offered by the client
         playerId = request.id
         if not playerId in self._players:
             if self.gc_pools.empty():
@@ -220,6 +278,8 @@ class GoGame(game_pb2_grpc.GameServicer):
 
     def ClearBoard(self, request, context):
         gc = self._players[request.id]
+        #now the game will send message to the game context`s channel,
+        #  then those contexts will deal with them orderly
         gc.reqChan.put_nowait("clear_board")
         while gc.respChan.empty():
             gevent.sleep(0)
@@ -241,6 +301,7 @@ class GoGame(game_pb2_grpc.GameServicer):
     def GenMove(self, request, context):
         gc = self._players[request.id]
         gc.reqChan.put_nowait("genmove")
+        #until the gc make response this object will be blocked
         while gc.respChan.empty():
             gevent.sleep(0)
         return gc.respChan.get()
@@ -259,28 +320,45 @@ class GoGame(game_pb2_grpc.GameServicer):
             gevent.sleep(0)
         return gc.respChan.get()
 
+    def HeartBeat(self, request , context):
+        self.connectionTime = 0
+        return game_pb2.BeatReply(beatReply = 1)
 
 class GameServer:
 
     def __init__(self, listen, workers=1):
+        #initialize the exit channel
         self.exitChan = Queue(maxsize=1)
+        #server is the grpc server
         self.server = grpc.server(futures.ThreadPoolExecutor(max_workers=workers))
+
+        #initialize the game
         self.game = GoGame(maxsize=10)
+
+        #the server here is the grpc server
         self.server.add_insecure_port(listen)
+
+        #regist the game to the server
+        #the game here is just the gogame created above
         game_pb2_grpc.add_GameServicer_to_server(self.game, self.server)
 
     def start(self):
+        #start the server
         self.server.start()
         while self.exitChan.empty():
             gevent.sleep(0)
+        #stop the console of the game
         self.game.stop_console()
     
     def stop(self):
+        #stop the server
         self.server.stop(0)
+        #put a element into the channel , so the channel is not empty and the loop will end
         self.exitChan.put_nowait(0)
 
 
 def main():
+    #listen to the port
     listen = os.getenv("GAME_LISTEN", "[::]:10000")
     gameserver = GameServer(listen)
     gevent.signal(signal.SIGTERM, gameserver.stop)
