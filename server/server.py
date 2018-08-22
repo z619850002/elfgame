@@ -192,9 +192,9 @@ class GoGame(game_pb2_grpc.GameServicer):
                     self.lock = True
                     #clear the board now
                     for gcItem in self._players.values():
-                        gcItem.reqChan.putnowait("clear_board")
+                        gcItem.reqChan.put_nowait("clear_board")
                         while gcItem.respChan.empty():
-                            gevent.sleep(0)
+                            sleep(0)
                         gcItem.respChan.get()
                     #free all game contexts
                     keys = []
