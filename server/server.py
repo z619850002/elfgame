@@ -197,6 +197,7 @@ class GoGame(game_pb2_grpc.GameServicer):
                     for playerId in keys:
                         self.gc_pools.put_nowait(self._players.pop(playerId))
                     print("connection out of time, free all gc")
+                    self.connectionTime = -1
                 #calculate for the connection time
                 self.connectionTime = self.connectionTime + 1
                 sleep(1)
