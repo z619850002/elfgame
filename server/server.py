@@ -207,8 +207,6 @@ class GoGame(game_pb2_grpc.GameServicer):
                     self.lock = False
                 #calculate for the connection time
                 self.connectionTime = self.connectionTime + 1
-                #release the lock
-                self.lock.release()
                 sleep(1)
         try:
             self.newThread = threading.Thread(target=heartBeat)
