@@ -1,0 +1,800 @@
+[2018-08-29 11:15:36.491] [rlpytorch.model_loader.load_env] [info] Loading env
+[2018-08-29 11:15:36.499] [rlpytorch.model_loader.load_env] [info] Parsed options: {'T': 1,
+ 'actor_only': False,
+ 'adam_eps': 0.001,
+ 'additional_labels': ['aug_code', 'move_idx'],
+ 'batchsize': 16,
+ 'batchsize2': -1,
+ 'black_use_policy_network_only': False,
+ 'bn': True,
+ 'bn_eps': 1e-05,
+ 'bn_momentum': 0.1,
+ 'cheat_eval_new_model_wins_half': False,
+ 'cheat_selfplay_random_result': False,
+ 'check_loaded_options': False,
+ 'client_max_delay_sec': 1200,
+ 'comment': '',
+ 'data_aug': -1,
+ 'dim': 224,
+ 'dist_rank': -1,
+ 'dist_url': '',
+ 'dist_world_size': -1,
+ 'dump_record_prefix': '',
+ 'epsilon': 0.0,
+ 'eval_model_pair': '',
+ 'eval_num_games': 400,
+ 'eval_old_model': -1,
+ 'eval_stats': '',
+ 'eval_winrate_thres': 0.55,
+ 'expected_num_clients': -1,
+ 'following_pass': False,
+ 'gpu': 0,
+ 'greedy': True,
+ 'keep_prev_selfplay': False,
+ 'keys_in_reply': ['V', 'rv'],
+ 'leaky_relu': False,
+ 'list_files': [],
+ 'load': '/home/wuhan/pytorch/pretrained-go-19x19-v1.bin',
+ 'load_model_sleep_interval': 0.0,
+ 'loglevel': 'info',
+ 'lr': 0.001,
+ 'mcts_alpha': 0.0,
+ 'mcts_epsilon': 0.0,
+ 'mcts_persistent_tree': True,
+ 'mcts_pick_method': 'most_visited',
+ 'mcts_puct': 1.5,
+ 'mcts_rollout_per_batch': 16,
+ 'mcts_rollout_per_thread': 64,
+ 'mcts_root_unexplored_q_zero': False,
+ 'mcts_threads': 2,
+ 'mcts_unexplored_q_zero': False,
+ 'mcts_use_prior': True,
+ 'mcts_verbose': False,
+ 'mcts_verbose_time': True,
+ 'mcts_virtual_loss': 1,
+ 'mode': 'online',
+ 'model': 'online',
+ 'momentum': 0.9,
+ 'move_cutoff': -1,
+ 'multipred_backprop': True,
+ 'no_parameter_print': True,
+ 'num_block': 20,
+ 'num_future_actions': 1,
+ 'num_games': 1,
+ 'num_games_per_thread': -1,
+ 'num_minibatch': 5000,
+ 'num_reader': 50,
+ 'num_reset_ranking': 5000,
+ 'omit_keys': [],
+ 'onload': [],
+ 'opt_method': 'adam',
+ 'parameter_print': True,
+ 'parsed_args': ['server.py'],
+ 'ply_pass_enabled': 0,
+ 'policy_distri_cutoff': 0,
+ 'policy_distri_training_for_all': False,
+ 'port': 1234,
+ 'preload_sgf': '',
+ 'preload_sgf_move_to': -1,
+ 'print_result': False,
+ 'q_max_size': 1000,
+ 'q_min_size': 10,
+ 'ratio_pre_moves': 0,
+ 'replace_prefix': ['resnet.module,resnet'],
+ 'resign_thres': 0.05,
+ 'sample_nodes': ['pi,a'],
+ 'sample_policy': 'epsilon-greedy',
+ 'selfplay_async': False,
+ 'selfplay_init_num': 2000,
+ 'selfplay_timeout_usec': 0,
+ 'selfplay_update_num': 1000,
+ 'server_addr': 'localhost',
+ 'server_id': '',
+ 'start_ratio_pre_moves': 0.5,
+ 'store_greedy': False,
+ 'suicide_after_n_games': -1,
+ 'use_data_parallel': False,
+ 'use_data_parallel_distributed': False,
+ 'use_df_feature': False,
+ 'use_fp16': False,
+ 'use_mcts': True,
+ 'use_mcts_ai2': False,
+ 'verbose': True,
+ 'weight_decay': 0.0,
+ 'white_mcts_rollout_per_batch': -1,
+ 'white_mcts_rollout_per_thread': -1,
+ 'white_puct': -1.0,
+ 'white_use_policy_network_only': False}
+[2018-08-29 11:15:36.500] [rlpytorch.model_loader.load_env] [info] Finished loading env
+[2018-08-29 11:15:38.991] [rlpytorch.model_loader.ModelLoader-0-model_indexNone] [info] Loading model from /home/wuhan/pytorch/pretrained-go-19x19-v1.bin
+[2018-08-29 11:15:38.992] [rlpytorch.model_loader.ModelLoader-0-model_indexNone] [info] replace_prefix for state dict: [['resnet.module', 'resnet']]
+[2018-08-29 11:15:39.085] [rlpytorch.model_loader.ModelLoader-0-model_indexNone] [info] Finished loading model from /home/wuhan/pytorch/pretrained-go-19x19-v1.bin
+[2018-08-29 11:15:39.093] [elf::legacy::ContextOptions-0] [info] JobId: local
+[2018-08-29 11:15:39.093] [elf::legacy::ContextOptions-0] [info] #Game: 1
+[2018-08-29 11:15:39.093] [elf::legacy::ContextOptions-0] [info] T: 1
+[2018-08-29 11:15:39.093] [elf::legacy::ContextOptions-0] [info] [#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.093] [elf::base::ThreadedDispatcherT-11] [info] Wait all games[1] to register their mailbox
+[2018-08-29 11:15:39.131] [elfgames::go::common::GoGameBase-13] [info] [0] Seed: 30366470, thread_id: 1819323872230228969
+[2018-08-29 11:15:39.131] [elf::base::ThreadedDispatcherT-11] [info] All games [1] registered
+[2018-08-29 11:15:39.132] [elfgames::go::common::DispatcherCallback-12] [info] Wed Aug 29 11:15:39 2018, EvalCtrl received new request: [client=1][async=0][#th=-1][b_res_th=0.05][w_res_th=0.05][swap=0][never_res_pr=0][selfplay=1920000][#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.132] [elfgames::go::GoGameSelfPlay-0-16] [info] Initializing actor actor_black; puct_override: -1; batch_override: -1; per_thread_override: -1
+[2018-08-29 11:15:39.132] [elfgames::go::common::DispatcherCallback-12] [info] Wed Aug 29 11:15:39 2018 Received actionable request: black_ver = 1920000, white_ver = -1, #addrs_to_reply: 1
+[2018-08-29 11:15:39.132] [elf::comm::Client-4] [warning] WARNING! no servers has the label: game_start
+[2018-08-29 11:15:39.133] [elf::legacy::ContextOptions-28] [info] JobId: local
+[2018-08-29 11:15:39.133] [elf::legacy::ContextOptions-28] [info] #Game: 1
+[2018-08-29 11:15:39.133] [elf::legacy::ContextOptions-28] [info] T: 1
+[2018-08-29 11:15:39.133] [elf::legacy::ContextOptions-28] [info] [#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.153] [elf::base::ThreadedDispatcherT-39] [info] Wait all games[1] to register their mailbox
+[2018-08-29 11:15:39.157] [elfgames::go::common::GoGameBase-41] [info] [0] Seed: 30366517, thread_id: 17357655115550121723
+[2018-08-29 11:15:39.157] [elf::base::ThreadedDispatcherT-39] [info] All games [1] registered
+[2018-08-29 11:15:39.157] [elfgames::go::common::DispatcherCallback-40] [info] Wed Aug 29 11:15:39 2018, EvalCtrl received new request: [client=1][async=0][#th=-1][b_res_th=0.05][w_res_th=0.05][swap=0][never_res_pr=0][selfplay=1920000][#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.157] [elfgames::go::GoGameSelfPlay-0-44] [info] Initializing actor actor_black; puct_override: -1; batch_override: -1; per_thread_override: -1
+[2018-08-29 11:15:39.157] [elfgames::go::common::DispatcherCallback-40] [info] Wed Aug 29 11:15:39 2018 Received actionable request: black_ver = 1920000, white_ver = -1, #addrs_to_reply: 1
+[2018-08-29 11:15:39.157] [elf::comm::Client-32] [warning] WARNING! no servers has the label: game_start
+[2018-08-29 11:15:39.158] [elf::legacy::ContextOptions-56] [info] JobId: local
+[2018-08-29 11:15:39.158] [elf::legacy::ContextOptions-56] [info] #Game: 1
+[2018-08-29 11:15:39.158] [elf::legacy::ContextOptions-56] [info] T: 1
+[2018-08-29 11:15:39.158] [elf::legacy::ContextOptions-56] [info] [#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.162] [elf::base::ThreadedDispatcherT-67] [info] Wait all games[1] to register their mailbox
+[2018-08-29 11:15:39.179] [elfgames::go::common::GoGameBase-69] [info] [0] Seed: 30366538, thread_id: 16231118405874778984
+[2018-08-29 11:15:39.179] [elf::base::ThreadedDispatcherT-67] [info] All games [1] registered
+[2018-08-29 11:15:39.179] [elfgames::go::common::DispatcherCallback-68] [info] Wed Aug 29 11:15:39 2018, EvalCtrl received new request: [client=1][async=0][#th=-1][b_res_th=0.05][w_res_th=0.05][swap=0][never_res_pr=0][selfplay=1920000][#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.179] [elfgames::go::GoGameSelfPlay-0-72] [info] Initializing actor actor_black; puct_override: -1; batch_override: -1; per_thread_override: -1
+[2018-08-29 11:15:39.179] [elfgames::go::common::DispatcherCallback-68] [info] Wed Aug 29 11:15:39 2018 Received actionable request: black_ver = 1920000, white_ver = -1, #addrs_to_reply: 1
+[2018-08-29 11:15:39.179] [elf::comm::Client-60] [warning] WARNING! no servers has the label: game_start
+[2018-08-29 11:15:39.180] [elf::legacy::ContextOptions-84] [info] JobId: local
+[2018-08-29 11:15:39.180] [elf::legacy::ContextOptions-84] [info] #Game: 1
+[2018-08-29 11:15:39.180] [elf::legacy::ContextOptions-84] [info] T: 1
+[2018-08-29 11:15:39.180] [elf::legacy::ContextOptions-84] [info] [#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.192] [elf::base::ThreadedDispatcherT-95] [info] Wait all games[1] to register their mailbox
+[2018-08-29 11:15:39.224] [elfgames::go::common::GoGameBase-97] [info] [0] Seed: 30366568, thread_id: 13322548632759017982
+[2018-08-29 11:15:39.224] [elf::base::ThreadedDispatcherT-95] [info] All games [1] registered
+[2018-08-29 11:15:39.224] [elfgames::go::common::DispatcherCallback-96] [info] Wed Aug 29 11:15:39 2018, EvalCtrl received new request: [client=1][async=0][#th=-1][b_res_th=0.05][w_res_th=0.05][swap=0][never_res_pr=0][selfplay=1920000][#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.224] [elfgames::go::GoGameSelfPlay-0-100] [info] Initializing actor actor_black; puct_override: -1; batch_override: -1; per_thread_override: -1
+[2018-08-29 11:15:39.224] [elfgames::go::common::DispatcherCallback-96] [info] Wed Aug 29 11:15:39 2018 Received actionable request: black_ver = 1920000, white_ver = -1, #addrs_to_reply: 1
+[2018-08-29 11:15:39.224] [elf::comm::Client-88] [warning] WARNING! no servers has the label: game_start
+[2018-08-29 11:15:39.225] [elf::legacy::ContextOptions-112] [info] JobId: local
+[2018-08-29 11:15:39.225] [elf::legacy::ContextOptions-112] [info] #Game: 1
+[2018-08-29 11:15:39.225] [elf::legacy::ContextOptions-112] [info] T: 1
+[2018-08-29 11:15:39.225] [elf::legacy::ContextOptions-112] [info] [#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.230] [elf::base::ThreadedDispatcherT-123] [info] Wait all games[1] to register their mailbox
+<module 'elfgames.go.game' from '/home/zhangtianjun/ELF/src_py/elfgames/go/game.py'> elfgames.go.game
+<module 'elfgames.go.df_model3' from '/home/zhangtianjun/ELF/src_py/elfgames/go/df_model3.py'> elfgames.go.df_model3
+Namespace(bn=True, bn_eps=1e-05, bn_momentum=0.1, check_loaded_options=False, dim=224, dist_rank=-1, dist_url='', dist_world_size=-1, gpu=0, leaky_relu=False, load='/home/wuhan/pytorch/pretrained-go-19x19-v1.bin', load_model_sleep_interval=0.0, num_block=20, omit_keys=[], onload=[], replace_prefix=['resnet.module,resnet'], use_data_parallel=False, use_data_parallel_distributed=False, use_fp16=False)
+Kyrie Tag! In load model:
+Namespace(bn=True, bn_eps=1e-05, bn_momentum=0.1, check_loaded_options=False, dim=224, dist_rank=-1, dist_url='', dist_world_size=-1, gpu=0, leaky_relu=False, load='/home/wuhan/pytorch/pretrained-go-19x19-v1.bin', load_model_sleep_interval=0.0, num_block=20, omit_keys=[], onload=[], replace_prefix=['resnet.module,resnet'], use_data_parallel=False, use_data_parallel_distributed=False, use_fp16=False)
+Kyrie Tag, running gpu is0
+**** Options ****
+Seed: 0
+Time signature: 180829-111539
+Client max delay in sec: 1200
+#FutureActions: 1
+#GamePerThread: -1
+mode: online
+Selfplay init min #games: 2000, update #games: 1000, async: False
+UseMCTS: True
+Data Aug: -1
+Start_ratio_pre_moves: 0.5
+ratio_pre_moves: 0
+MoveCutOff: -1
+Use DF feature: False
+PolicyDistriCutOff: 0
+Server_addr: localhost, server_id: , port: 1234
+#Reader: 50, Qmin_sz: 10, Qmax_sz: 1000
+Verbose: True
+Policy distri training for all moves: True
+Min Ply from which pass is enabled: 0
+Reset move ranking after 5000 actions
+Resign Threshold: 0.05, Dynamic Resign Threshold, resign_prob_never: 0.1, target_fp_rate: 0.05, bounded within [1e-09, 0.5]
+
+Komi: 7.5
+
+*****************
+Version:  c469bf6f34d8efb50e462f9ddd7363960d198b69_unstaged
+Mode:  online
+Num Actions:  362
+human_actor: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'a', 'V'], 'batchsize': 1}
+SharedMem: "human_actor", keys: ['V', 'aug_code', 's', 'a', 'move_idx', 'pi']
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+actor_black: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'V', 'a', 'rv'], 'timeout_usec': 10, 'batchsize': 16}
+SharedMem: "actor_black", keys: ['rv', 'aug_code', 's', 'a', 'pi', 'move_idx', 'V']
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+last command is:
+score is:[0.0, 0.0]
+**** Options ****
+Seed: 0
+Time signature: 180829-111539
+Client max delay in sec: 1200
+#FutureActions: 1
+#GamePerThread: -1
+mode: online
+Selfplay init min #games: 2000, update #games: 1000, async: False
+UseMCTS: True
+Data Aug: -1
+Start_ratio_pre_moves: 0.5
+ratio_pre_moves: 0
+MoveCutOff: -1
+Use DF feature: False
+PolicyDistriCutOff: 0
+Server_addr: localhost, server_id: , port: 1234
+#Reader: 50, Qmin_sz: 10, Qmax_sz: 1000
+Verbose: True
+Policy distri training for all moves: True
+Min Ply from which pass is enabled: 0
+Reset move ranking after 5000 actions
+Resign Threshold: 0.05, Dynamic Resign Threshold, resign_prob_never: 0.1, target_fp_rate: 0.05, bounded within [1e-09, 0.5]
+
+Komi: 7.5
+
+*****************
+Version:  c469bf6f34d8efb50e462f9ddd7363960d198b69_unstaged
+Mode:  online
+Num Actions:  362
+human_actor: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'a', 'V'], 'batchsize': 1}
+SharedMem: "human_actor", keys: ['V', 'aug_code', 's', 'a', 'move_idx', 'pi']
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+actor_black: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'V', 'a', 'rv'], 'timeout_usec': 10, 'batchsize': 16}
+SharedMem: "actor_black", keys: ['rv', 'aug_code', 's', 'a', 'pi', 'move_idx', 'V']
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+last command is:
+score is:[0.0, 0.0]
+**** Options ****
+Seed: 0
+Time signature: 180829-111539
+Client max delay in sec: 1200
+#FutureActions: 1
+#GamePerThread: -1
+mode: online
+Selfplay init min #games: 2000, update #games: 1000, async: False
+UseMCTS: True
+Data Aug: -1
+Start_ratio_pre_moves: 0.5
+ratio_pre_moves: 0
+MoveCutOff: -1
+Use DF feature: False
+PolicyDistriCutOff: 0
+Server_addr: localhost, server_id: , port: 1234
+#Reader: 50, Qmin_sz: 10, Qmax_sz: 1000
+Verbose: True
+Policy distri training for all moves: True
+Min Ply from which pass is enabled: 0
+Reset move ranking after 5000 actions
+Resign Threshold: 0.05, Dynamic Resign Threshold, resign_prob_never: 0.1, target_fp_rate: 0.05, bounded within [1e-09, 0.5]
+
+Komi: 7.5
+
+*****************
+Version:  c469bf6f34d8efb50e462f9ddd7363960d198b69_unstaged
+Mode:  online
+Num Actions:  362
+human_actor: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'a', 'V'], 'batchsize': 1}
+SharedMem: "human_actor", keys: ['V', 'aug_code', 's', 'a', 'move_idx', 'pi']
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+actor_black: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'V', 'a', 'rv'], 'timeout_usec': 10, 'batchsize': 16}
+SharedMem: "actor_black", keys: ['rv', 'aug_code', 's', 'a', 'pi', 'move_idx', 'V']
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+last command is:
+score is:[0.0, 0.0]
+**** Options ****
+Seed: 0
+Time signature: 180829-111539
+Client max delay in sec: 1200
+#FutureActions: 1
+#GamePerThread: -1
+mode: online
+Selfplay init min #games: 2000, update #games: 1000, async: False
+UseMCTS: True
+Data Aug: -1
+Start_ratio_pre_moves: 0.5
+ratio_pre_moves: 0
+MoveCutOff: -1
+Use DF feature: False
+PolicyDistriCutOff: 0
+Server_addr: localhost, server_id: , port: 1234
+#Reader: 50, Qmin_sz: 10, Qmax_sz: 1000
+Verbose: True
+Policy distri training for all moves: True
+Min Ply from which pass is enabled: 0
+Reset move ranking after 5000 actions
+Resign Threshold: 0.05, Dynamic Resign Threshold, resign_prob_never: 0.1, target_fp_rate: 0.05, bounded within [1e-09, 0.5]
+
+Komi: 7.5
+
+*****************
+Version:  c469bf6f34d8efb50e462f9ddd7363960d198b69_unstaged
+Mode:  online
+Num Actions:  362
+human_actor: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'a', 'V'], 'batchsize': 1}
+SharedMem: "human_actor", keys: ['V', 'aug_code', 's', 'a', 'move_idx', 'pi']
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+actor_black: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'V', 'a', 'rv'], 'timeout_usec': 10, 'batchsize': 16}
+SharedMem: "actor_black", keys: ['rv', 'aug_code', 's', 'a', 'pi', 'move_idx', 'V']
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+last command is:
+score is:[0.0, 0.0]
+**** Options ****
+Seed: 0
+Time signature: 180829-111539
+Client max delay in sec: 1200
+#FutureActions: 1
+#GamePerThread: -1
+mode: online
+Selfplay init min #games: 2000, update #games: 1000, async: False
+UseMCTS: True
+Data Aug: -1
+Start_ratio_pre_moves: 0.5
+ratio_pre_moves: 0
+MoveCutOff: -1
+Use DF feature: False
+PolicyDistriCutOff: 0
+Server_addr: localhost, server_id: , port: 1234
+#Reader: 50, Qmin_sz: 10, Qmax_sz: 1000
+Verbose: True
+Policy distri training for all moves: True
+Min Ply from which pass is enabled: 0
+Reset move ranking after 5000 actions
+Resign Threshold: 0.05, Dynamic Resign Threshold, resign_prob_never: 0.1, target_fp_rate: 0.05, bounded within [1e-09, 0.5]
+
+Komi: 7.5
+[2018-08-29 11:15:39.273] [elfgames::go::common::GoGameBase-125] [info] [0] Seed: 30366606, thread_id: 5549962643346883601
+[2018-08-29 11:15:39.273] [elf::base::ThreadedDispatcherT-123] [info] All games [1] registered
+[2018-08-29 11:15:39.274] [elfgames::go::common::DispatcherCallback-124] [info] Wed Aug 29 11:15:39 2018, EvalCtrl received new request: [client=1][async=0][#th=-1][b_res_th=0.05][w_res_th=0.05][swap=0][never_res_pr=0][selfplay=1920000][#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.274] [elfgames::go::GoGameSelfPlay-0-128] [info] Initializing actor actor_black; puct_override: -1; batch_override: -1; per_thread_override: -1
+[2018-08-29 11:15:39.274] [elfgames::go::common::DispatcherCallback-124] [info] Wed Aug 29 11:15:39 2018 Received actionable request: black_ver = 1920000, white_ver = -1, #addrs_to_reply: 1
+[2018-08-29 11:15:39.274] [elf::comm::Client-116] [warning] WARNING! no servers has the label: game_start
+[2018-08-29 11:15:39.274] [elf::legacy::ContextOptions-140] [info] JobId: local
+[2018-08-29 11:15:39.274] [elf::legacy::ContextOptions-140] [info] #Game: 1
+[2018-08-29 11:15:39.274] [elf::legacy::ContextOptions-140] [info] T: 1
+[2018-08-29 11:15:39.274] [elf::legacy::ContextOptions-140] [info] [#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.283] [elf::base::ThreadedDispatcherT-151] [info] Wait all games[1] to register their mailbox
+[2018-08-29 11:15:39.328] [elfgames::go::common::GoGameBase-153] [info] [0] Seed: 30366659, thread_id: 9404519006740419962
+[2018-08-29 11:15:39.328] [elf::base::ThreadedDispatcherT-151] [info] All games [1] registered
+[2018-08-29 11:15:39.328] [elfgames::go::common::DispatcherCallback-152] [info] Wed Aug 29 11:15:39 2018, EvalCtrl received new request: [client=1][async=0][#th=-1][b_res_th=0.05][w_res_th=0.05][swap=0][never_res_pr=0][selfplay=1920000][#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.328] [elfgames::go::GoGameSelfPlay-0-156] [info] Initializing actor actor_black; puct_override: -1; batch_override: -1; per_thread_override: -1
+[2018-08-29 11:15:39.328] [elfgames::go::common::DispatcherCallback-152] [info] Wed Aug 29 11:15:39 2018 Received actionable request: black_ver = 1920000, white_ver = -1, #addrs_to_reply: 1
+[2018-08-29 11:15:39.328] [elf::comm::Client-144] [warning] WARNING! no servers has the label: game_start
+[2018-08-29 11:15:39.328] [elf::legacy::ContextOptions-168] [info] JobId: local
+[2018-08-29 11:15:39.329] [elf::legacy::ContextOptions-168] [info] #Game: 1
+[2018-08-29 11:15:39.329] [elf::legacy::ContextOptions-168] [info] T: 1
+[2018-08-29 11:15:39.329] [elf::legacy::ContextOptions-168] [info] [#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.333] [elf::base::ThreadedDispatcherT-179] [info] Wait all games[1] to register their mailbox
+[2018-08-29 11:15:39.435] [elfgames::go::common::GoGameBase-181] [info] [0] Seed: 30366709, thread_id: 18274061395196344720
+[2018-08-29 11:15:39.435] [elf::base::ThreadedDispatcherT-179] [info] All games [1] registered
+[2018-08-29 11:15:39.435] [elfgames::go::common::DispatcherCallback-180] [info] Wed Aug 29 11:15:39 2018, EvalCtrl received new request: [client=1][async=0][#th=-1][b_res_th=0.05][w_res_th=0.05][swap=0][never_res_pr=0][selfplay=1920000][#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.435] [elfgames::go::GoGameSelfPlay-0-184] [info] Initializing actor actor_black; puct_override: -1; batch_override: -1; per_thread_override: -1
+[2018-08-29 11:15:39.435] [elfgames::go::common::DispatcherCallback-180] [info] Wed Aug 29 11:15:39 2018 Received actionable request: black_ver = 1920000, white_ver = -1, #addrs_to_reply: 1
+[2018-08-29 11:15:39.435] [elf::comm::Client-172] [warning] WARNING! no servers has the label: game_start
+[2018-08-29 11:15:39.436] [elf::legacy::ContextOptions-196] [info] JobId: local
+[2018-08-29 11:15:39.436] [elf::legacy::ContextOptions-196] [info] #Game: 1
+[2018-08-29 11:15:39.436] [elf::legacy::ContextOptions-196] [info] T: 1
+[2018-08-29 11:15:39.436] [elf::legacy::ContextOptions-196] [info] [#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.444] [elf::base::ThreadedDispatcherT-207] [info] Wait all games[1] to register their mailbox
+[2018-08-29 11:15:39.519] [elfgames::go::common::GoGameBase-209] [info] [0] Seed: 30366820, thread_id: 3827704823932045265
+[2018-08-29 11:15:39.519] [elf::base::ThreadedDispatcherT-207] [info] All games [1] registered
+[2018-08-29 11:15:39.519] [elfgames::go::common::DispatcherCallback-208] [info] Wed Aug 29 11:15:39 2018, EvalCtrl received new request: [client=1][async=0][#th=-1][b_res_th=0.05][w_res_th=0.05][swap=0][never_res_pr=0][selfplay=1920000][#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.519] [elfgames::go::GoGameSelfPlay-0-212] [info] Initializing actor actor_black; puct_override: -1; batch_override: -1; per_thread_override: -1
+[2018-08-29 11:15:39.519] [elfgames::go::common::DispatcherCallback-208] [info] Wed Aug 29 11:15:39 2018 Received actionable request: black_ver = 1920000, white_ver = -1, #addrs_to_reply: 1
+[2018-08-29 11:15:39.519] [elf::comm::Client-200] [warning] WARNING! no servers has the label: game_start
+[2018-08-29 11:15:39.521] [elf::legacy::ContextOptions-224] [info] JobId: local
+[2018-08-29 11:15:39.521] [elf::legacy::ContextOptions-224] [info] #Game: 1
+[2018-08-29 11:15:39.521] [elf::legacy::ContextOptions-224] [info] T: 1
+[2018-08-29 11:15:39.521] [elf::legacy::ContextOptions-224] [info] [#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.526] [elf::base::ThreadedDispatcherT-235] [info] Wait all games[1] to register their mailbox
+[2018-08-29 11:15:39.544] [elf::base::ThreadedDispatcherT-235] [info] All games [1] registered
+[2018-08-29 11:15:39.544] [elfgames::go::common::GoGameBase-237] [info] [0] Seed: 30366902, thread_id: 1885886043727324429
+[2018-08-29 11:15:39.544] [elfgames::go::common::DispatcherCallback-236] [info] Wed Aug 29 11:15:39 2018, EvalCtrl received new request: [client=1][async=0][#th=-1][b_res_th=0.05][w_res_th=0.05][swap=0][never_res_pr=0][selfplay=1920000][#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.544] [elfgames::go::GoGameSelfPlay-0-240] [info] Initializing actor actor_black; puct_override: -1; batch_override: -1; per_thread_override: -1
+[2018-08-29 11:15:39.544] [elfgames::go::common::DispatcherCallback-236] [info] Wed Aug 29 11:15:39 2018 Received actionable request: black_ver = 1920000, white_ver = -1, #addrs_to_reply: 1
+[2018-08-29 11:15:39.544] [elf::comm::Client-228] [warning] WARNING! no servers has the label: game_start
+[2018-08-29 11:15:39.545] [elf::legacy::ContextOptions-252] [info] JobId: local
+[2018-08-29 11:15:39.545] [elf::legacy::ContextOptions-252] [info] #Game: 1
+[2018-08-29 11:15:39.545] [elf::legacy::ContextOptions-252] [info] T: 1
+[2018-08-29 11:15:39.545] [elf::legacy::ContextOptions-252] [info] [#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.549] [elf::base::ThreadedDispatcherT-263] [info] Wait all games[1] to register their mailbox
+
+*****************
+Version:  c469bf6f34d8efb50e462f9ddd7363960d198b69_unstaged
+Mode:  online
+Num Actions:  362
+human_actor: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'a', 'V'], 'batchsize': 1}
+SharedMem: "human_actor", keys: ['V', 'aug_code', 's', 'a', 'move_idx', 'pi']
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+actor_black: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'V', 'a', 'rv'], 'timeout_usec': 10, 'batchsize': 16}
+SharedMem: "actor_black", keys: ['rv', 'aug_code', 's', 'a', 'pi', 'move_idx', 'V']
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+last command is:
+score is:[0.0, 0.0]
+**** Options ****
+Seed: 0
+Time signature: 180829-111539
+Client max delay in sec: 1200
+#FutureActions: 1
+#GamePerThread: -1
+mode: online
+Selfplay init min #games: 2000, update #games: 1000, async: False
+UseMCTS: True
+Data Aug: -1
+Start_ratio_pre_moves: 0.5
+ratio_pre_moves: 0
+MoveCutOff: -1
+Use DF feature: False
+PolicyDistriCutOff: 0
+Server_addr: localhost, server_id: , port: 1234
+#Reader: 50, Qmin_sz: 10, Qmax_sz: 1000
+Verbose: True
+Policy distri training for all moves: True
+Min Ply from which pass is enabled: 0
+Reset move ranking after 5000 actions
+Resign Threshold: 0.05, Dynamic Resign Threshold, resign_prob_never: 0.1, target_fp_rate: 0.05, bounded within [1e-09, 0.5]
+
+Komi: 7.5
+
+*****************
+Version:  c469bf6f34d8efb50e462f9ddd7363960d198b69_unstaged
+Mode:  online
+Num Actions:  362
+human_actor: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'a', 'V'], 'batchsize': 1}
+SharedMem: "human_actor", keys: ['V', 'aug_code', 's', 'a', 'move_idx', 'pi']
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+actor_black: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'V', 'a', 'rv'], 'timeout_usec': 10, 'batchsize': 16}
+SharedMem: "actor_black", keys: ['rv', 'aug_code', 's', 'a', 'pi', 'move_idx', 'V']
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+last command is:
+score is:[0.0, 0.0]
+**** Options ****
+Seed: 0
+Time signature: 180829-111539
+Client max delay in sec: 1200
+#FutureActions: 1
+#GamePerThread: -1
+mode: online
+Selfplay init min #games: 2000, update #games: 1000, async: False
+UseMCTS: True
+Data Aug: -1
+Start_ratio_pre_moves: 0.5
+ratio_pre_moves: 0
+MoveCutOff: -1
+Use DF feature: False
+PolicyDistriCutOff: 0
+Server_addr: localhost, server_id: , port: 1234
+#Reader: 50, Qmin_sz: 10, Qmax_sz: 1000
+Verbose: True
+Policy distri training for all moves: True
+Min Ply from which pass is enabled: 0
+Reset move ranking after 5000 actions
+Resign Threshold: 0.05, Dynamic Resign Threshold, resign_prob_never: 0.1, target_fp_rate: 0.05, bounded within [1e-09, 0.5]
+
+Komi: 7.5
+
+*****************
+Version:  c469bf6f34d8efb50e462f9ddd7363960d198b69_unstaged
+Mode:  online
+Num Actions:  362
+human_actor: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'a', 'V'], 'batchsize': 1}
+SharedMem: "human_actor", keys: ['V', 'aug_code', 's', 'a', 'move_idx', 'pi']
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+actor_black: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'V', 'a', 'rv'], 'timeout_usec': 10, 'batchsize': 16}
+SharedMem: "actor_black", keys: ['rv', 'aug_code', 's', 'a', 'pi', 'move_idx', 'V']
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+last command is:
+score is:[0.0, 0.0]
+**** Options ****
+Seed: 0
+Time signature: 180829-111539
+Client max delay in sec: 1200
+#FutureActions: 1
+#GamePerThread: -1
+mode: online
+Selfplay init min #games: 2000, update #games: 1000, async: False
+UseMCTS: True
+Data Aug: -1
+Start_ratio_pre_moves: 0.5
+ratio_pre_moves: 0
+MoveCutOff: -1
+Use DF feature: False
+PolicyDistriCutOff: 0
+Server_addr: localhost, server_id: , port: 1234
+#Reader: 50, Qmin_sz: 10, Qmax_sz: 1000
+Verbose: True
+Policy distri training for all moves: True
+Min Ply from which pass is enabled: 0
+Reset move ranking after 5000 actions
+Resign Threshold: 0.05, Dynamic Resign Threshold, resign_prob_never: 0.1, target_fp_rate: 0.05, bounded within [1e-09, 0.5]
+
+Komi: 7.5
+
+*****************
+Version:  c469bf6f34d8efb50e462f9ddd7363960d198b69_unstaged
+Mode:  online
+Num Actions:  362
+human_actor: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'a', 'V'], 'batchsize': 1}
+SharedMem: "human_actor", keys: ['V', 'aug_code', 's', 'a', 'move_idx', 'pi']
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+actor_black: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'V', 'a', 'rv'], 'timeout_usec': 10, 'batchsize': 16}
+SharedMem: "actor_black", keys: ['rv', 'aug_code', 's', 'a', 'pi', 'move_idx', 'V']
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+last command is:
+score is:[0.0, 0.0]
+**** Options ****
+Seed: 0
+Time signature: 180829-111539
+Client max delay in sec: 1200
+#FutureActions: 1
+#GamePerThread: -1
+mode: online
+Selfplay init min #games: 2000, update #games: 1000, async: False
+UseMCTS: True
+Data Aug: -1
+Start_ratio_pre_moves: 0.5
+ratio_pre_moves: 0
+MoveCutOff: -1
+Use DF feature: False
+PolicyDistriCutOff: 0
+Server_addr: localhost, server_id: , port: 1234
+#Reader: 50, Qmin_sz: 10, Qmax_sz: 1000
+Verbose: True
+Policy distri training for all moves: True
+Min Ply from which pass is enabled: 0
+Reset move ranking after 5000 actions
+Resign Threshold: 0.05, Dynamic Resign Threshold, resign_prob_never: 0.1, target_fp_rate: 0.05, bounded within [1e-09, 0.5]
+
+Komi: 7.5
+
+*****************
+Version:  c469bf6f34d8efb50e462f9ddd7363960d198b69_unstaged
+Mode:  online
+Num Actions:  362
+human_actor: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'a', 'V'], 'batchsize': 1}
+SharedMem: "human_actor", keys: ['V', 'aug_code', 's', 'a', 'move_idx', 'pi']
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+V float [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+move_idx int32_t [16]
+pi float [16, 362]
+actor_black: {'input': ['s', 'aug_code', 'move_idx'], 'reply': ['pi', 'V', 'a', 'rv'], 'timeout_usec': 10, 'batchsize': 16}
+SharedMem: "actor_black", keys: ['rv', 'aug_code', 's', 'a', 'pi', 'move_idx', 'V']
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+rv int64_t [16]
+aug_code int32_t [16]
+s float [16, 18, 19, 19]
+a int64_t [16]
+pi float [16, 362]
+move_idx int32_t [16]
+V float [16]
+last command is:
+score is:[0.0, 0.0]
+**** Options ****
+Seed: 0
+Time signature: 180829-111539
+Client max delay in sec: 1200
+#FutureActions: 1
+#GamePerThread: -1
+mode: online
+Selfplay init min #games: 2000, update #games: 1000, async: False
+UseMCTS: True
+Data Aug: -1
+Start_ratio_pre_moves: 0.5
+ratio_pre_moves: 0
+MoveCutOff: -1
+Use DF feature: False
+PolicyDistriCutOff: 0
+Server_addr: localhost, server_id: , port: 1234
+#Reader: 50, Qmin_sz: 10, Qmax_sz: 1000
+Verbose: True
+Policy distri training for all moves: True
+Min Ply from which pass is enabled: 0
+Reset move ranking after 5000 actions
+Resign Threshold: 0.05, Dynamic Resign Threshold, resign_prob_never: 0.1, target_fp_rate: 0.05, bounded within [1e-09, 0.5]
+
+Komi: 7.5
+[2018-08-29 11:15:39.572] [elfgames::go::common::GoGameBase-265] [info] [0] Seed: 30366925, thread_id: 956128753635373012
+[2018-08-29 11:15:39.572] [elf::base::ThreadedDispatcherT-263] [info] All games [1] registered
+[2018-08-29 11:15:39.572] [elfgames::go::common::DispatcherCallback-264] [info] Wed Aug 29 11:15:39 2018, EvalCtrl received new request: [client=1][async=0][#th=-1][b_res_th=0.05][w_res_th=0.05][swap=0][never_res_pr=0][selfplay=1920000][#th=2][rl=64][per=1][eps=0][alpha=0][prior=1][c_puct=1.5][uqz=0][r_uqz=0]
+[2018-08-29 11:15:39.572] [elfgames::go::GoGameSelfPlay-0-268] [info] Initializing actor actor_black; puct_override: -1; batch_override: -1; per_thread_override: -1
+[2018-08-29 11:15:39.572] [elfgames::go::common::DispatcherCallback-264] [info] Wed Aug 29 11:15:39 2018 Received actionable request: black_ver = 1920000, white_ver = -1, #addrs_to_reply: 1
+[2018-08-29 11:15:39.572] [elf::comm::Client-256] [warning] WARNING! no servers has the label: game_start

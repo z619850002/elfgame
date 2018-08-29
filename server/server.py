@@ -122,10 +122,14 @@ class GameContext:
     #the return value of this function is a dictionary, it`s sent to the console, while the reply to the game object is by the response channel
     def human_actor(self, batch):
         self.batch = batch
-
+        print("last command is:" , end = "")
+        print(self.last_cmd)
+        print("score is:" , end = "")
+        print(self.console.get_both_score(batch))
         if self.last_cmd == "play" or self.last_cmd == "genmove":
             #resign means give up
             if self.console.get_last_move(batch).lower() == "resign":
+                print("resign!")
                 #the last game is end， then we need to calculate for the final score
                 self.respChan.put_nowait(game_pb2.Reply(final_score=self.console.get_final_score(batch),
                                                  status=google_dot_rpc_dot_status__pb2.Status(code=google_dot_rpc_dot_code__pb2.OK),
@@ -142,7 +146,10 @@ class GameContext:
                                                  board=batch.GC.getGame(0).showBoard()))
         elif self.last_cmd == "clear_board":
             self.respChan.put_nowait(google_dot_rpc_dot_status__pb2.Status(code=google_dot_rpc_dot_code__pb2.OK))
-
+        elif self.last_cmd == "resign":
+             self.respChan.put_nowait(game_pb2.Reply(final_score=self.console.get_final_score(batch),
+                                                 status=google_dot_rpc_dot_status__pb2.Status(code=google_dot_rpc_dot_code__pb2.OK),
+                                                 resigned=True))
         self.last_cmd = ""
         while self.reqChan.empty():
             gevent.sleep(0)
@@ -184,35 +191,35 @@ class GoGame(game_pb2_grpc.GameServicer):
         self.start_console()
         self.lock = False
 
-        def heartBeat():
-            while(self.finish==1):
-                #lock this block
-                #connection is broken
-                if (self.connectionTime > 5):
-                    self.lock = True
-                    #clear the board now
-                    for gcItem in self._players.values():
-                        gcItem.reqChan.put_nowait("clear_board")
-                        while gcItem.respChan.empty():
-                            sleep(0)
-                        gcItem.respChan.get()
-                    #free all game contexts
-                    keys = []
-                    for playerId in self._players.keys():
-                        keys.append(playerId)
-                    for playerId in keys:
-                        self.gc_pools.put_nowait(self._players.pop(playerId))
-                    print("connection out of time, free all gc")
-                    self.connectionTime = -1
-                    self.lock = False
+       # def heartBeat():
+        #    while(self.finish==1):
+         #       #lock this block
+          #      #connection is broken
+           #     if (self.connectionTime > 5):
+            #        self.lock = True
+             #       #clear the board now
+              #      for gcItem in self._players.values():
+               #         gcItem.reqChan.put_nowait("clear_board")
+               #         while gcItem.respChan.empty():
+               #             sleep(0)
+               #         gcItem.respChan.get()
+               #     #free all game contexts
+                #    keys = []
+                 #   for playerId in self._players.keys():
+                  #      keys.append(playerId)
+                   # for playerId in keys:
+                   #     self.gc_pools.put_nowait(self._players.pop(playerId))
+                   # print("connection out of time, free all gc")
+                 #   self.connectionTime = -1
+                 #   self.lock = False
                 #calculate for the connection time
-                self.connectionTime = self.connectionTime + 1
-                sleep(1)
-        try:
-            self.newThread = threading.Thread(target=heartBeat)
-            self.newThread.start()
-        except:
-            print("Error: unable to start thread")
+              #  self.connectionTime = self.connectionTime + 1
+              #  sleep(1)
+       # try:
+       #     self.newThread = threading.Thread(target=heartBeat)
+        #    self.newThread.start()
+       # except:
+        #    print("Error: unable to start thread")
 
     #start the console module
     def _start_console(self):
@@ -269,8 +276,8 @@ class GoGame(game_pb2_grpc.GameServicer):
     #the function here will return the protobuf
     #the function like clear board, play etc., will block here until the response channel is not empty
     def NewGC(self, request, context):
-        while (self.lock):
-            pass
+       # while (self.lock):
+        #    pass
         #offered by the client
         playerId = request.id
         if not playerId in self._players:
@@ -281,8 +288,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return google_dot_rpc_dot_status__pb2.Status(code=google_dot_rpc_dot_code__pb2.OK)
 
     def FreeGC(self, request, context):
-        while (self.lock):
-            pass
+       # while (self.lock):
+        #    pass
         playerId = request.id
         if playerId not in self._players:
             return google_dot_rpc_dot_status__pb2.Status(code=google_dot_rpc_dot_code__pb2.NOT_FOUND)
@@ -290,8 +297,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return google_dot_rpc_dot_status__pb2.Status(code=google_dot_rpc_dot_code__pb2.OK)
 
     def ClearBoard(self, request, context):
-        while (self.lock):
-            pass
+       # while (self.lock):
+        #    pass
         gc = self._players[request.id]
         #now the game will send message to the game context`s channel,
         #  then those contexts will deal with them orderly
@@ -302,8 +309,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return gc.respChan.get()
 
     def Play(self, request, context):
-        while (self.lock):
-            pass
+       # while (self.lock):
+        #    pass
         gc = self._players[request.player.id]
         try:
             gc.action = gc.console.move2action(request.move)
@@ -316,8 +323,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return gc.respChan.get()
 
     def GenMove(self, request, context):
-        while (self.lock):
-            pass
+       # while (self.lock):
+        #    pass
         gc = self._players[request.id]
         gc.reqChan.put_nowait("genmove")
         #until the gc make response this object will be blocked
@@ -326,8 +333,8 @@ class GoGame(game_pb2_grpc.GameServicer):
         return gc.respChan.get()
 
     def Pass(self, request, context):
-        while (self.lock):
-            pass
+       # while (self.lock):
+        #    pass
         gc = self._players[request.id]
         gc.reqChan.put_nowait("pass")
         while gc.respChan.empty():
@@ -335,17 +342,19 @@ class GoGame(game_pb2_grpc.GameServicer):
         return gc.respChan.get()
 
     def Resign(self, request, context):
-        while (self.lock):
-            pass
+       # while (self.lock):
+        #    pass
         gc = self._players[request.id]
         gc.reqChan.put_nowait("resign")
+        print("put")
         while gc.respChan.empty():
             gevent.sleep(0)
+        print("return value")
         return gc.respChan.get()
 
     def HeartBeat(self, request , context):
-        while (self.lock):
-            pass
+       # while (self.lock):
+        #    pass
         self.connectionTime = 0
         return game_pb2.BeatReply(beatReply = 1)
 
@@ -384,7 +393,7 @@ class GameServer:
 
 def main():
     #listen to the port
-    listen = os.getenv("GAME_LISTEN", "[::]:10000")
+    listen = os.getenv("GAME_LISTEN", "[::]:20000")
     gameserver = GameServer(listen)
     gevent.signal(signal.SIGTERM, gameserver.stop)
     gevent.signal(signal.SIGINT, gameserver.stop)

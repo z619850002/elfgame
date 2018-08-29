@@ -335,6 +335,8 @@ class GoConsoleGTP:
 
     def get_final_score(self, batch):
         return batch.GC.getGame(0).getLastScore()
+    def get_both_score(self , batch):
+        return [batch.GC.getGame(0).getBlackScore() , batch.GC.getGame(0).getWhiteScore()]
 
     def check_player(self, batch, player):
         board_next_player = self.get_next_player(batch)
@@ -361,7 +363,8 @@ class GoConsoleGTP:
             self.print_msg(True, self.get_last_move(batch))
 
         self.last_cmd = ""
-
+        print("in prompt, last cmd is: " , end = "")
+        print(self.last_cmd)
         while True:
             cmd = input(prompt_str)
             items = cmd.split()
